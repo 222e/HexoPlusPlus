@@ -29,7 +29,8 @@ if(data_name==undefined){console.log("ERROR:No data_name");data_name="hpp_editor
 if(owo==undefined){console.log("ERROR:No owo");owo="https://cdn.jsdelivr.net/gh/ChenYFan/CDN@master/assets/list.json"}
 document.getElementById(ele).innerHTML=`
 <div class="black2">
-	<button onclick="hpp_start_or_stop_backup()" class="btn btn-primary"><i class="fa fa-clock-o fa-2x"><\/i><\/button> 
+    <button onclick="hpp_start_or_stop_backup()" class="btn btn-primary"><i class="fa fa-refresh fa-2x"><\/i><\/button> 
+    <button onclick="hpp_current_time()" class="btn btn-primary"><i class="fa fa-clock-o fa-2x"><\/i><\/button> 
     <button onclick="$('#input').click();" class="btn btn-primary"><i class="fa fa-photo fa-2x"><\/i><\/button>
     <button onclick="$('#upload_md').click();" class="btn btn-primary"><i class="fa fa-file fa-2x"><\/i><\/button>
     <button onclick="hpp_preview('${ele}','${data_name}')" id="hpp_eye_${ele}" class="btn btn-primary"><i class="fa fa-eye fa-2x"><\/i><\/button>
@@ -63,6 +64,11 @@ else if(localStorage.getItem("hpp_editor_autobackup")=="2"){
 localStorage.setItem(`hpp_${data_name}_backup`,document.getElementById(`text_${ele}`).value);
 localStorage.setItem(`hpp_${data_name}_choo_backup`,document.getElementById(`choo`).value);
 }else{}
+};
+function hpp_current_time() {
+    var myDate = new Date();
+    var current_time = myDate.format('Y-m-d H:i:s');
+    document.write(str.replace(/{{ date }}/,current_time))
 };
 function hpp_start_or_stop_backup(){
 var notyf = new Notyf();
