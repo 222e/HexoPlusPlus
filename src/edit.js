@@ -1,26 +1,25 @@
+var getFileContent = function (fileInput, callback) {
+    if (fileInput.files && fileInput.files.length > 0 && fileInput.files[0].size > 0) {
+	var file = fileInput.files[0];
+	if (window.FileReader) {
+	    var reader = new FileReader();
+	    reader.onloadend = function (evt) {
+		if (evt.target.readyState == FileReader.DONE) {
+		    callback(evt.target.result);
+		}
+	    };
+	    reader.readAsText(file, "UTF-8");
+	}
+    }
+};
 
-        var getFileContent = function (fileInput, callback) {
-            if (fileInput.files && fileInput.files.length > 0 && fileInput.files[0].size > 0) {
-                var file = fileInput.files[0];
-                if (window.FileReader) {
-                    var reader = new FileReader();
-                    reader.onloadend = function (evt) {
-                        if (evt.target.readyState == FileReader.DONE) {
-                            callback(evt.target.result);
-                        }
-                    };
-                    reader.readAsText(file, "UTF-8");
-                }
-            }
-        };
+document.getElementById('upload_md').onchange = function () {
+    var content = document.getElementById('text_hpp_doc_editor');
 
-        document.getElementById('upload_md').onchange = function () {
-            var content = document.getElementById('text_hpp_doc_editor');
-
-            getFileContent(this, function (str) {
-                content.value = str;
-            });
-        };
+    getFileContent(this, function (str) {
+	content.value = str;
+    });
+};
 function hpp_md_editor({ele,data_name,owo,backuptime}){
 var notyf = new Notyf();
 
@@ -30,7 +29,7 @@ if(owo==undefined){console.log("ERROR:No owo");owo="https://cdn.jsdelivr.net/gh/
 document.getElementById(ele).innerHTML=`
 <div class="black2">
     <button onclick="hpp_start_or_stop_backup()" class="btn btn-primary"><i class="fa fa-refresh fa-2x"><\/i><\/button> 
-    <button onclick="hpp_current_time()" class="btn btn-primary"><i class="fa fa-clock-o fa-2x"><\/i><\/button> 
+    <button onclick="time('current_time')" class="btn btn-primary"><i class="fa fa-clock-o fa-2x"><\/i><\/button> 
     <button onclick="$('#input').click();" class="btn btn-primary"><i class="fa fa-photo fa-2x"><\/i><\/button>
     <button onclick="$('#upload_md').click();" class="btn btn-primary"><i class="fa fa-file fa-2x"><\/i><\/button>
     <button onclick="hpp_preview('${ele}','${data_name}')" id="hpp_eye_${ele}" class="btn btn-primary"><i class="fa fa-eye fa-2x"><\/i><\/button>
@@ -65,10 +64,16 @@ localStorage.setItem(`hpp_${data_name}_backup`,document.getElementById(`text_${e
 localStorage.setItem(`hpp_${data_name}_choo_backup`,document.getElementById(`choo`).value);
 }else{}
 };
-function hpp_current_time() {
+function time(str) {
     var myDate = new Date();
     var current_time = myDate.format('Y-m-d H:i:s');
-    document.write(str.replace(/{{ date }}/,current_time))
+    var tc = document.getElementById("text_hpp_doc_editor");  
+    var tclen = tc.value.length;  
+    tc.focus();  
+    if(typeof document.selection != "undefined")  
+    {document.selection.createRange().text = str;}  
+    else  
+    {tc.value=tc.value.substr(0,tc.selectionStart)+str+tc.value.substring(tc.selectionStart,tclen);}  
 };
 function hpp_start_or_stop_backup(){
 var notyf = new Notyf();
